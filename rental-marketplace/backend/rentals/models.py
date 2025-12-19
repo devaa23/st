@@ -54,3 +54,21 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment of {self.amount} for {self.booking}"
+# backend/rentals/models.py
+
+class Delivery(models.Model):
+    STATUS_CHOICES = (('scheduled', 'Scheduled'), ('in_transit', 'In Transit'), ('delivered', 'Delivered'))
+    booking = models.OneToOneField('rentals.Booking', on_delete=models.CASCADE)
+    delivery_agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, limit_choices_to={'role': 'delivery'})
+    pickup_time = models.DateTimeField(null=True, blank=True)
+    delivery_time = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='scheduled')
+
+class Complaint(models.Model):
+    STATUS_CHOICES = (('open', 'Open'), ('resolved', 'Resolved'), ('escalated', 'Escalated'))
+    booking = models.ForeignKey('rentals.Booking', on_delete=models.CASCADE)
+    filed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='filed_complaints')
+    target_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='received_complaints')
+    reason = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    created_at = models.DateTimeField(auto_now_add=True)

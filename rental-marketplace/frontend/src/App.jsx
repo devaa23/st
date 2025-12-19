@@ -47,6 +47,8 @@ function AppContent() {
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
           <Routes>
             {/* Public Access */}
+            <Route path="/delivery-dashboard" element={<ProtectedRoute roleRequired="delivery"><DeliveryDashboard /></ProtectedRoute>} />
+<Route path="/support-dashboard" element={<ProtectedRoute roleRequired="support"><SupportDashboard /></ProtectedRoute>} />
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />

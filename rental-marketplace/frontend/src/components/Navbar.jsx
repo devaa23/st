@@ -40,6 +40,12 @@ export default function Navbar() {
               <div className="flex items-center gap-4 sm:gap-6">
                 
                 {/* OWNER LINKS */}
+                {user.role === 'delivery' && (
+  <Link to="/delivery-dashboard" className="bg-blue-600 text-white px-4 py-2 rounded-full text-xs font-bold">Delivery Tasks</Link>
+)}
+{user.role === 'support' && (
+  <Link to="/support-dashboard" className="bg-purple-600 text-white px-4 py-2 rounded-full text-xs font-bold">Support Tickets</Link>
+)}
                 {user.role === 'owner' && (
                   <>
                     <Link to="/post-item" className="hidden sm:block text-sm font-bold text-gray-600 hover:text-green-600">

@@ -49,3 +49,17 @@ class PaymentViewSet(viewsets.ModelViewSet):
         booking = payment.booking
         booking.status = 'completed' 
         booking.save()
+# rentals/views.py
+class DeliveryViewSet(viewsets.ModelViewSet):
+    serializer_class = DeliverySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.role == 'delivery':
+            return Delivery.objects.filter(delivery_agent=self.request.user)
+        return Delivery.objects.all()
+
+class ComplaintViewSet(viewsets.ModelViewSet):
+    queryset = Complaint.objects.all()
+    serializer_class = ComplaintSerializer
+    permission_classes = [permissions.IsAuthenticated] # Only Support/Admin usually access
