@@ -1,9 +1,10 @@
 from rest_framework import viewsets, permissions
 from .models import Booking
 from .serializers import BookingSerializer
-from .models import Booking, Review , Payment # <--- Add 'Review' here
+from .models import Booking, Review , Payment, Delivery, Complaint # <--- Add 'Review' here
 from .serializers import BookingSerializer, ReviewSerializer # <--- Add 
-from .serializers import BookingSerializer, ReviewSerializer, MessageSerializer ,PaymentSerializer# <--- 
+from .serializers import BookingSerializer, ReviewSerializer, MessageSerializer ,PaymentSerializer,DeliverySerializer,ComplaintSerializer  # <--- Add this
+      
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
@@ -63,3 +64,16 @@ class ComplaintViewSet(viewsets.ModelViewSet):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
     permission_classes = [permissions.IsAuthenticated] # Only Support/Admin usually access
+class DeliveryViewSet(viewsets.ModelViewSet):
+    serializer_class = DeliverySerializer # Now this will work!
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        if self.request.user.role == 'delivery':
+            return Delivery.objects.filter(delivery_agent=self.request.user)
+        return Delivery.objects.all()
+
+class ComplaintViewSet(viewsets.ModelViewSet):
+    queryset = Complaint.objects.all()
+    serializer_class = ComplaintSerializer # Now this will work!
+    permission_classes = [permissions.IsAuthenticated]

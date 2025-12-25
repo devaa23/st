@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from accounts.views import RegisterView, UserMeView
 from rest_framework.routers import DefaultRouter
-from rentals.views import BookingViewSet, ReviewViewSet, MessageViewSet, PaymentViewSet
+from rentals.views import BookingViewSet, ReviewViewSet, MessageViewSet, PaymentViewSet,DeliveryViewSet,ComplaintViewSet # <--- Add this
+    
 
 from listings.views import ItemViewSet
 from rentals.views import BookingViewSet 
@@ -28,6 +29,8 @@ router.register(r'payments', PaymentViewSet)
 router.register(r'bookings', BookingViewSet)
 router.register(r'reviews', ReviewViewSet)
 router.register(r'messages', MessageViewSet, basename='messages')
+router.register(r'deliveries', DeliveryViewSet, basename='deliveries') # <--- Add this
+router.register(r'complaints', ComplaintViewSet)
 # This allows the browser to see uploaded images during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

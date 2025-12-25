@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Booking
 from .models import Booking, Review
 from .models import Booking, Review, Message 
-from .models import Booking, Review, Message, Payment
+from .models import Booking, Review, Message, Payment, Complaint,Delivery
 class BookingSerializer(serializers.ModelSerializer):
     # These read-only fields allow React to show names instead of just IDs
     item_name = serializers.ReadOnlyField(source='item.name')
@@ -44,3 +44,18 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = '__all__'
+class DeliverySerializer(serializers.ModelSerializer):
+    booking_item_name = serializers.ReadOnlyField(source='booking.item.name')
+    owner_name = serializers.ReadOnlyField(source='booking.item.owner.username')
+
+    class Meta:
+        model = Delivery
+        fields = ['id', 'booking', 'booking_item_name', 'owner_name', 'delivery_agent', 'pickup_time', 'delivery_time', 'status']
+
+class ComplaintSerializer(serializers.ModelSerializer):
+    filed_by_name = serializers.ReadOnlyField(source='filed_by.username')
+    target_user_name = serializers.ReadOnlyField(source='target_user.username')
+
+    class Meta:
+        model = Complaint
+        fields = ['id', 'booking', 'filed_by', 'filed_by_name', 'target_user', 'target_user_name', 'reason', 'status', 'created_at']
